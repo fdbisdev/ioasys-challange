@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import Login from './src/pages/Login/index';
 
 function App() {
-    return <Text>Hello</Text>;
+    return <Login />;
 }
 
 export default App;
