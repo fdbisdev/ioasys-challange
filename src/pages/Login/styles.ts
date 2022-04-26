@@ -13,6 +13,14 @@ export const BackgroundWrapper = styled.View.attrs({
     position: 'absolute',
 })``;
 
+export const TextError = styled.Text`
+    color: #ffcccc;
+    font-size: 12px;
+    margin-top: 0px;
+    left: -10px;
+    font-weight: bold;
+`;
+
 export const Title = styled.Text`
     color: #fff;
     font-size: 32px;
@@ -48,6 +56,10 @@ export const InputContainer = styled.View`
     height: 50px;
 `;
 
+export const InputTextArea = styled.TextInput`
+    color: #fff;
+`;
+
 export const LogoWrapper = styled.View`
     flex-direction: row;
     align-items: center;
@@ -71,7 +83,7 @@ export const InputWrapper = styled.View`
     top: 46px;
     align-self: center;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     flex-direction: row;
 `;
 
