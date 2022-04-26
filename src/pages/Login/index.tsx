@@ -27,11 +27,25 @@ import {
 
 import Logo from '../../assets/images/Logo.svg';
 import loginSchema from '../../schemas/login';
+import { useAuth } from '../../hooks/useAuth';
 
 const initialValues = { email: '', password: '' };
 
+interface ILoginParams {
+    email: string;
+    password: string;
+}
+
 function Login() {
     const [isLoading, setIsLoading] = React.useState(false);
+
+    const { signIn } = useAuth();
+
+    const handleSignIn = (values: ILoginParams) => {
+        setIsLoading(true);
+        signIn(values.email, values.password);
+        setIsLoading(false);
+    };
 
     return (
         <TouchableWithoutFeedback
@@ -63,9 +77,7 @@ function Login() {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={loginSchema}
-                            onSubmit={values => {
-                                console.log(values);
-                            }}
+                            onSubmit={values => handleSignIn(values)}
                         >
                             {({
                                 handleChange,
