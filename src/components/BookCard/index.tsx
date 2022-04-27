@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
     Container,
     Title,
@@ -36,8 +37,19 @@ interface IBook {
 function BookCard(book: IBook) {
     const { book: bookItem } = book;
 
+    const navigation = useNavigation();
+
+    const handlePressCardBook = useCallback(
+        value => {
+            navigation.navigate('Details', {
+                book: value,
+            });
+        },
+        [navigation],
+    );
+
     return (
-        <Container>
+        <Container onPress={() => handlePressCardBook(bookItem)}>
             {bookItem?.imageUrl ? (
                 <BookImage source={{ uri: bookItem?.imageUrl }} />
             ) : (

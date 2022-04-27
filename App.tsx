@@ -2,15 +2,15 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider, useAuth } from './src/hooks/useAuth';
 
-import Login from './src/pages/Login/index';
-import Home from './src/pages/Home';
+import AuthRoutes from './src/routes/AuthRoutes';
+import UnauthRoutes from './src/routes/UnauthRoutes';
 
 function Routes() {
     const { isLogged } = useAuth();
 
     return (
         <NavigationContainer>
-            {isLogged ? <Home /> : <Login />}
+            {isLogged ? <AuthRoutes /> : <UnauthRoutes />}
         </NavigationContainer>
     );
 }
