@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { AxiosResponseHeaders } from 'axios';
 import api from '../services/api';
 import useSnackbar from './useSnackbar';
 
@@ -40,21 +41,26 @@ export const useAuth = () => {
 export const AuthProvider: React.FC = ({ children }) => {
     const [isLogged, setIsLogged] = useState(false);
     const [user, setUser] = useState<IUser | null>(null);
-    const [userHeaders, setUserHeaders] = useState<object | null>(null);
+    const [userHeaders, setUserHeaders] = useState<AxiosResponseHeaders | null>(
+        null,
+    );
 
     const { error, success } = useSnackbar();
 
-    useEffect(() => {
-        async function checkIfUserIsLogged() {
-            const authHeader = await AsyncStorage.getItem('@userHeaders');
-            if (authHeader) {
-                setUserHeaders(JSON.parse(authHeader));
-                setIsLogged(true);
-            }
-        }
+    const refreshToken = useCallback(
+        async (token: string) => {
+            try {
+                await api.post('auth/refresh-token', {
+                    refreshToken: token,
+                });
 
-        checkIfUserIsLogged();
-    }, []);
+                success('Token atualizado com sucesso!');
+            } catch (err) {
+                error('Não foi possível atualizar o token');
+            }
+        },
+        [error, success],
+    );
 
     const storeUser = useCallback(
         async (value: IUser) => {
@@ -129,6 +135,20 @@ export const AuthProvider: React.FC = ({ children }) => {
             signOut,
         };
     }, [isLogged, user, userHeaders, signIn, signOut]);
+
+    useEffect(() => {
+        async function checkIfUserIsLogged() {
+            const authHeader = await AsyncStorage.getItem('@userHeaders');
+            if (authHeader) {
+                const refreshTokenForPost = JSON.parse(authHeader);
+                refreshToken(refreshTokenForPost['refresh-token']);
+                setUserHeaders(JSON.parse(authHeader));
+                setIsLogged(true);
+            }
+        }
+
+        checkIfUserIsLogged();
+    }, [refreshToken]);
 
     return (
         <AuthContext.Provider value={returnValues}>
