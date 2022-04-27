@@ -44,7 +44,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const { error, success } = useSnackbar();
 
-    // TODO check if user is logged
     useEffect(() => {
         async function checkIfUserIsLogged() {
             const authHeader = await AsyncStorage.getItem('@userHeaders');
@@ -105,10 +104,21 @@ export const AuthProvider: React.FC = ({ children }) => {
         [error, storeUser, storeUserHeaders, success],
     );
 
+    const clearUser = useCallback(async () => {
+        try {
+            await AsyncStorage.removeItem('@user');
+            await AsyncStorage.removeItem('@userHeaders');
+        } catch (err) {
+            error('Não foi possível limpar o usuário do storage');
+        }
+    }, [error]);
+
     const signOut = useCallback(() => {
-        setUser(null);
+        clearUser();
         setIsLogged(false);
-    }, []);
+        setUser(null);
+        setUserHeaders(null);
+    }, [clearUser]);
 
     const returnValues = useMemo(() => {
         return {
