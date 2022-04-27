@@ -1,4 +1,6 @@
+import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
+import { IBookProps } from '../../components/BookCard';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -61,4 +63,14 @@ export const SearchInput = styled.View`
     padding: 12px;
 `;
 
-export const BookList = styled.FlatList``;
+export const BookList = styled(FlatList as new () => FlatList<IBookProps>)`
+    margin-top: 32px;
+    width: 100%;
+    margin-left: 5%;
+`;
+
+export const Loading = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`;

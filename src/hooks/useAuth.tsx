@@ -25,6 +25,7 @@ interface IAuthParams {
     isLogged: boolean;
     user: IUser | null;
     signOut: () => void;
+    userHeaders: AxiosResponseHeaders | null;
 }
 
 const AuthContext = createContext<IAuthParams | null>(null);
