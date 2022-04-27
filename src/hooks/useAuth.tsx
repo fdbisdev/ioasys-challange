@@ -4,7 +4,10 @@ import React, {
     createContext,
     useMemo,
     useCallback,
+    useEffect,
 } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import api from '../services/api';
 import useSnackbar from './useSnackbar';
 
@@ -37,11 +40,47 @@ export const useAuth = () => {
 export const AuthProvider: React.FC = ({ children }) => {
     const [isLogged, setIsLogged] = useState(false);
     const [user, setUser] = useState<IUser | null>(null);
+    const [userHeaders, setUserHeaders] = useState<object | null>(null);
 
     const { error, success } = useSnackbar();
 
     // TODO check if user is logged
-    // useEffect(() => { }, []);
+    useEffect(() => {
+        async function checkIfUserIsLogged() {
+            const authHeader = await AsyncStorage.getItem('@userHeaders');
+            if (authHeader) {
+                setUserHeaders(JSON.parse(authHeader));
+                setIsLogged(true);
+            }
+        }
+
+        checkIfUserIsLogged();
+    }, []);
+
+    const storeUser = useCallback(
+        async (value: IUser) => {
+            try {
+                await AsyncStorage.setItem('@user', JSON.stringify(value));
+            } catch (err) {
+                error('Não foi possível salvar o usuário no storage');
+            }
+        },
+        [error],
+    );
+
+    const storeUserHeaders = useCallback(
+        async (value: object) => {
+            try {
+                await AsyncStorage.setItem(
+                    '@userHeaders',
+                    JSON.stringify(value),
+                );
+            } catch (err) {
+                error('Não foi possível salvar o usuário no storage');
+            }
+        },
+        [error],
+    );
 
     const signIn = useCallback(
         async (email: string, password: string) => {
@@ -53,13 +92,17 @@ export const AuthProvider: React.FC = ({ children }) => {
 
                 setIsLogged(true);
                 setUser(response.data);
+                setUserHeaders(response.headers);
+
+                storeUser(response.data);
+                storeUserHeaders(response.headers);
 
                 success('Login realizado com sucesso!');
             } catch (err) {
                 error('Não foi possível realizar login');
             }
         },
-        [error, success],
+        [error, storeUser, storeUserHeaders, success],
     );
 
     const signOut = useCallback(() => {
@@ -71,10 +114,11 @@ export const AuthProvider: React.FC = ({ children }) => {
         return {
             isLogged,
             user,
+            userHeaders,
             signIn,
             signOut,
         };
-    }, [isLogged, user, signIn, signOut]);
+    }, [isLogged, user, userHeaders, signIn, signOut]);
 
     return (
         <AuthContext.Provider value={returnValues}>

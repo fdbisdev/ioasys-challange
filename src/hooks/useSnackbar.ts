@@ -6,7 +6,7 @@ const useSnackbar = () => {
         Snackbar.show({
             text,
             duration: Snackbar.LENGTH_SHORT,
-            backgroundColor: '#cc0000',
+            backgroundColor: '#550000',
             textColor: '#fff',
         });
     }, []);
@@ -15,16 +15,7 @@ const useSnackbar = () => {
         Snackbar.show({
             text,
             duration: Snackbar.LENGTH_SHORT,
-            backgroundColor: '#55ff55',
-            textColor: '#fff',
-        });
-    }, []);
-
-    const warning = useCallback((text: string) => {
-        Snackbar.show({
-            text,
-            duration: Snackbar.LENGTH_SHORT,
-            backgroundColor: '#ff0',
+            backgroundColor: '#005500',
             textColor: '#fff',
         });
     }, []);
@@ -32,7 +23,6 @@ const useSnackbar = () => {
     return {
         error,
         success,
-        warning,
     };
 };
 
