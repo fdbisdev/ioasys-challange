@@ -12,6 +12,7 @@ import {
     SearchInput,
     BookList,
     Loading,
+    SearchButton,
 } from './styles';
 
 import LogoBlack from '../../assets/images/logoBlack.svg';
@@ -26,11 +27,38 @@ import useSnackbar from '../../hooks/useSnackbar';
 
 function Home() {
     const [books, setBooks] = React.useState<IBookProps[]>([]);
+    const [booksAux, setBooksAux] = React.useState<IBookProps[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [searchInputValue, setSearchInputValue] = React.useState('');
 
     const { error } = useSnackbar();
 
     const { signOut, userHeaders } = useAuth();
+
+    const handlePressSearchIcon = () => {
+        setIsLoading(true);
+
+        if (searchInputValue === '') {
+            setBooksAux(books);
+            setIsLoading(false);
+            return;
+        }
+
+        const newBooks: IBookProps[] = [];
+
+        books.forEach(book => {
+            if (
+                book.title
+                    .toLowerCase()
+                    .includes(searchInputValue.toLowerCase())
+            ) {
+                newBooks.push(book);
+            }
+        });
+
+        setBooksAux(newBooks);
+        setIsLoading(false);
+    };
 
     const renderItem: ListRenderItem<IBookProps> = ({ item }) => {
         return <BookCard book={item} />;
@@ -47,6 +75,7 @@ function Home() {
                 });
 
                 setBooks(response.data.data);
+                setBooksAux(response.data.data);
                 setIsLoading(false);
             } catch (err) {
                 error('Não foi possível carregar os livros');
@@ -55,6 +84,7 @@ function Home() {
         };
 
         getBooks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, userHeaders]);
 
     return (
@@ -77,8 +107,14 @@ function Home() {
 
             <SearchWrapper>
                 <SearchInput>
-                    <TextArea placeholder="Procure um livro" />
-                    <SearchIcon />
+                    <TextArea
+                        value={searchInputValue}
+                        placeholder="Procure um livro"
+                        onChangeText={text => setSearchInputValue(text)}
+                    />
+                    <SearchButton onPress={() => handlePressSearchIcon()}>
+                        <SearchIcon />
+                    </SearchButton>
                 </SearchInput>
 
                 <FilterIcon />
@@ -89,7 +125,7 @@ function Home() {
                     <ActivityIndicator size="large" color="#333" />
                 </Loading>
             ) : (
-                <BookList data={books} renderItem={renderItem} />
+                <BookList data={booksAux} renderItem={renderItem} />
             )}
         </Container>
     );
