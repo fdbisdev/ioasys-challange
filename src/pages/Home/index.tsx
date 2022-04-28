@@ -50,6 +50,7 @@ function Home() {
                 setIsLoading(false);
             } catch (err) {
                 error('Não foi possível carregar os livros');
+                signOut();
             }
         };
 
