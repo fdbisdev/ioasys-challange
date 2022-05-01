@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ActivityIndicator, ListRenderItem, StatusBar } from 'react-native';
 
 import {
@@ -38,16 +38,156 @@ import api from '../../services/api';
 import useSnackbar from '../../hooks/useSnackbar';
 import FilterBullet from '../../components/FilterBullet';
 
+const filterCategoriesInitialState = {
+    design: false,
+    uxdesign: false,
+    uidesign: false,
+    arquitetura: false,
+    css: false,
+    usuabilidade: false,
+    designthinking: false,
+};
+
+const filterYearsInitialState = {
+    DOISMIL15: false,
+    DOISMIL16: false,
+    DOISMIL17: false,
+    DOISMIL18: false,
+    DOISMIL19: false,
+    DOISMIL20: false,
+    DOISMIL21: false,
+};
+
+// eslint-disable-next-line no-shadow
+enum filterCategoriesEnum {
+    DESIGN,
+    UXDESIGN,
+    UIDESIGN,
+    ARQUITETURA,
+    CSS,
+    USUABILIDADE,
+    DESIGNTHINKING,
+}
+
+enum filterYearsEnum {
+    DOISMIL15,
+    DOISMIL16,
+    DOISMIL17,
+    DOISMIL18,
+    DOISMIL19,
+    DOISMIL20,
+    DOISMIL21,
+}
+
 function Home() {
     const [books, setBooks] = React.useState<IBookProps[]>([]);
     const [booksAux, setBooksAux] = React.useState<IBookProps[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [modalFilter, setModalFilter] = React.useState(false);
+    const [filterCategories, setFilterCategories] = React.useState(
+        filterCategoriesInitialState,
+    );
+    const [filterYears, setFilterYears] = React.useState(
+        filterYearsInitialState,
+    );
     const [searchInputValue, setSearchInputValue] = React.useState('');
 
     const { error } = useSnackbar();
 
     const { signOut, userHeaders } = useAuth();
+
+    const handlePressCategories = (categoryElement: number) => {
+        switch (categoryElement) {
+            case filterCategoriesEnum.DESIGN:
+                setFilterCategories({
+                    design: !filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.UXDESIGN:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: !filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.UIDESIGN:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: !filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.ARQUITETURA:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: !filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.CSS:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: !filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.USUABILIDADE:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: !filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+            case filterCategoriesEnum.DESIGNTHINKING:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: !filterCategories.designthinking,
+                });
+                break;
+            default:
+                setFilterCategories({
+                    design: filterCategories.design,
+                    uxdesign: filterCategories.uxdesign,
+                    uidesign: filterCategories.uidesign,
+                    arquitetura: filterCategories.arquitetura,
+                    css: filterCategories.css,
+                    usuabilidade: filterCategories.usuabilidade,
+                    designthinking: filterCategories.designthinking,
+                });
+                break;
+        }
+    };
 
     const handlePressSearchIcon = () => {
         setIsLoading(true);
@@ -171,13 +311,67 @@ function Home() {
                     </ModalBody>
 
                     <CategoriesBody>
-                        <FilterBullet bulletTitle="Design" />
-                        <FilterBullet bulletTitle="UX Design" />
-                        <FilterBullet bulletTitle="UI Design" />
-                        <FilterBullet bulletTitle="Arquitetura da informação" />
-                        <FilterBullet bulletTitle="CSS" />
-                        <FilterBullet bulletTitle="Usuabilidade" />
-                        <FilterBullet bulletTitle="Design Thinking" />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.DESIGN,
+                                )
+                            }
+                            active={filterCategories.design}
+                            bulletTitle="Design"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.UXDESIGN,
+                                )
+                            }
+                            active={filterCategories.uxdesign}
+                            bulletTitle="UX Design"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.UIDESIGN,
+                                )
+                            }
+                            active={filterCategories.uidesign}
+                            bulletTitle="UI Design"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.ARQUITETURA,
+                                )
+                            }
+                            active={filterCategories.arquitetura}
+                            bulletTitle="Arquitetura da informação"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(filterCategoriesEnum.CSS)
+                            }
+                            active={filterCategories.css}
+                            bulletTitle="CSS"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.USUABILIDADE,
+                                )
+                            }
+                            active={filterCategories.usuabilidade}
+                            bulletTitle="Usuabilidade"
+                        />
+                        <FilterBullet
+                            onPress={() =>
+                                handlePressCategories(
+                                    filterCategoriesEnum.DESIGNTHINKING,
+                                )
+                            }
+                            active={filterCategories.designthinking}
+                            bulletTitle="Design Thinking"
+                        />
                     </CategoriesBody>
 
                     <ModalBody>
@@ -185,13 +379,34 @@ function Home() {
                     </ModalBody>
 
                     <YearsBody>
-                        <FilterBullet bulletTitle="2015" />
-                        <FilterBullet bulletTitle="2016" />
-                        <FilterBullet bulletTitle="2017" />
-                        <FilterBullet bulletTitle="2018" />
-                        <FilterBullet bulletTitle="2019" />
-                        <FilterBullet bulletTitle="2020" />
-                        <FilterBullet bulletTitle="2021" />
+                        <FilterBullet
+                            active={filterYears.DOISMIL15}
+                            bulletTitle="2015"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL16}
+                            bulletTitle="2016"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL17}
+                            bulletTitle="2017"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL18}
+                            bulletTitle="2018"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL19}
+                            bulletTitle="2019"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL20}
+                            bulletTitle="2020"
+                        />
+                        <FilterBullet
+                            active={filterYears.DOISMIL21}
+                            bulletTitle="2021"
+                        />
                     </YearsBody>
 
                     <FilterButton>
