@@ -1,5 +1,6 @@
 import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
+import DefaultModal from 'react-native-modal';
 import { IBookProps } from '../../components/BookCard';
 
 export const Container = styled.SafeAreaView`
@@ -76,3 +77,71 @@ export const Loading = styled.View`
 `;
 
 export const SearchButton = styled.TouchableOpacity``;
+
+export const ErrorText = styled.Text``;
+
+export const ErrorWrapper = styled.View`
+    margin-top: 12px;
+    align-items: center;
+`;
+
+export const ModalFilter = styled(DefaultModal)``;
+
+export const ModalContainer = styled.View`
+    background-color: #fff;
+    height: 435px;
+    width: 100%;
+`;
+
+export const ModalHeader = styled.View`
+    margin-top: 16px;
+    margin-right: 16px;
+    align-items: flex-end;
+`;
+
+export const ModalBodyText = styled.Text`
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+`;
+
+export const ModalBody = styled.View`
+    margin-left: 5%;
+`;
+
+export const CategoriesBody = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5px;
+    margin-right: 5px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    margin-bottom: 24px;
+`;
+
+export const YearsBody = styled.View`
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+`;
+
+export const FilterButton = styled.TouchableOpacity`
+    border: 1px solid #b22e6f;
+    border-radius: 44px;
+    width: 90px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin-top: 28px;
+`;
+
+export const FilterText = styled.Text`
+    color: #b22e6f;
+    font-size: 16px;
+    font-weight: 500;
+`;

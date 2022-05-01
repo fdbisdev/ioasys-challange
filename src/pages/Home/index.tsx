@@ -13,22 +13,36 @@ import {
     BookList,
     Loading,
     SearchButton,
+    ErrorWrapper,
+    ErrorText,
+    ModalFilter,
+    ModalContainer,
+    ModalHeader,
+    ModalBodyText,
+    ModalBody,
+    CategoriesBody,
+    YearsBody,
+    FilterButton,
+    FilterText,
 } from './styles';
 
 import LogoBlack from '../../assets/images/logoBlack.svg';
 import Logout from '../../assets/images/Logout.svg';
 import SearchIcon from '../../assets/images/searchIcon.svg';
 import FilterIcon from '../../assets/images/filterIcon.svg';
+import CloseIcon from '../../assets/images/close.svg';
 
 import { useAuth } from '../../hooks/useAuth';
 import BookCard, { IBookProps } from '../../components/BookCard';
 import api from '../../services/api';
 import useSnackbar from '../../hooks/useSnackbar';
+import FilterBullet from '../../components/FilterBullet';
 
 function Home() {
     const [books, setBooks] = React.useState<IBookProps[]>([]);
     const [booksAux, setBooksAux] = React.useState<IBookProps[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [modalFilter, setModalFilter] = React.useState(false);
     const [searchInputValue, setSearchInputValue] = React.useState('');
 
     const { error } = useSnackbar();
@@ -88,46 +102,104 @@ function Home() {
     }, [error, userHeaders]);
 
     return (
-        <Container>
-            <StatusBar
-                translucent
-                barStyle="dark-content"
-                backgroundColor="transparent"
-            />
-            <Header>
-                <LogoWrapper>
-                    <LogoBlack width={134} height={56} />
-                    <Title>Books</Title>
-                </LogoWrapper>
+        <>
+            <Container>
+                <StatusBar
+                    translucent
+                    barStyle="dark-content"
+                    backgroundColor="transparent"
+                />
+                <Header>
+                    <LogoWrapper>
+                        <LogoBlack width={134} height={56} />
+                        <Title>Books</Title>
+                    </LogoWrapper>
 
-                <LogoutButton onPress={() => signOut()}>
-                    <Logout />
-                </LogoutButton>
-            </Header>
+                    <LogoutButton onPress={() => signOut()}>
+                        <Logout />
+                    </LogoutButton>
+                </Header>
 
-            <SearchWrapper>
-                <SearchInput>
-                    <TextArea
-                        value={searchInputValue}
-                        placeholder="Procure um livro"
-                        onChangeText={text => setSearchInputValue(text)}
-                    />
-                    <SearchButton onPress={() => handlePressSearchIcon()}>
-                        <SearchIcon />
+                <SearchWrapper>
+                    <SearchInput>
+                        <TextArea
+                            value={searchInputValue}
+                            placeholder="Procure um livro"
+                            onChangeText={text => setSearchInputValue(text)}
+                        />
+                        <SearchButton onPress={() => handlePressSearchIcon()}>
+                            <SearchIcon />
+                        </SearchButton>
+                    </SearchInput>
+
+                    <SearchButton onPress={() => setModalFilter(true)}>
+                        <FilterIcon />
                     </SearchButton>
-                </SearchInput>
+                </SearchWrapper>
 
-                <FilterIcon />
-            </SearchWrapper>
+                {isLoading ? (
+                    <Loading>
+                        <ActivityIndicator size="large" color="#333" />
+                    </Loading>
+                ) : (
+                    // eslint-disable-next-line react/jsx-no-useless-fragment
+                    <>
+                        {booksAux.length === 0 ? (
+                            <ErrorWrapper>
+                                <ErrorText>Nenhum livro encontrado</ErrorText>
+                            </ErrorWrapper>
+                        ) : (
+                            <BookList data={booksAux} renderItem={renderItem} />
+                        )}
+                    </>
+                )}
+            </Container>
 
-            {isLoading ? (
-                <Loading>
-                    <ActivityIndicator size="large" color="#333" />
-                </Loading>
-            ) : (
-                <BookList data={booksAux} renderItem={renderItem} />
-            )}
-        </Container>
+            <ModalFilter
+                isVisible={modalFilter}
+                onBackButtonPress={() => setModalFilter(false)}
+            >
+                <ModalContainer>
+                    <ModalHeader>
+                        <LogoutButton onPress={() => setModalFilter(false)}>
+                            <CloseIcon />
+                        </LogoutButton>
+                    </ModalHeader>
+
+                    <ModalBody>
+                        <ModalBodyText>Selecione a categoria</ModalBodyText>
+                    </ModalBody>
+
+                    <CategoriesBody>
+                        <FilterBullet bulletTitle="Design" />
+                        <FilterBullet bulletTitle="UX Design" />
+                        <FilterBullet bulletTitle="UI Design" />
+                        <FilterBullet bulletTitle="Arquitetura da informação" />
+                        <FilterBullet bulletTitle="CSS" />
+                        <FilterBullet bulletTitle="Usuabilidade" />
+                        <FilterBullet bulletTitle="Design Thinking" />
+                    </CategoriesBody>
+
+                    <ModalBody>
+                        <ModalBodyText>Selecione o ano</ModalBodyText>
+                    </ModalBody>
+
+                    <YearsBody>
+                        <FilterBullet bulletTitle="2015" />
+                        <FilterBullet bulletTitle="2016" />
+                        <FilterBullet bulletTitle="2017" />
+                        <FilterBullet bulletTitle="2018" />
+                        <FilterBullet bulletTitle="2019" />
+                        <FilterBullet bulletTitle="2020" />
+                        <FilterBullet bulletTitle="2021" />
+                    </YearsBody>
+
+                    <FilterButton>
+                        <FilterText>Filtrar</FilterText>
+                    </FilterButton>
+                </ModalContainer>
+            </ModalFilter>
+        </>
     );
 }
 
