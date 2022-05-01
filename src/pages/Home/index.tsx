@@ -69,6 +69,16 @@ enum filterCategoriesEnum {
     DESIGNTHINKING,
 }
 
+const years = {
+    doismil15: '2015',
+    doismil16: '2016',
+    doismil17: '2017',
+    doismil18: '2018',
+    doismil19: '2019',
+    doismil20: '2020',
+    doismil21: '2021',
+};
+
 // eslint-disable-next-line no-shadow
 enum filterYearsEnum {
     DOISMIL15,
@@ -97,174 +107,242 @@ function Home() {
 
     const { signOut, userHeaders } = useAuth();
 
-    const handlePressYear = (yearElement: number) => {
-        switch (yearElement) {
-            case filterYearsEnum.DOISMIL15:
-                setFilterYears({
-                    doismil15: !filterYears.doismil15,
-                    doismil16: filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL16:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
-                    doismil16: !filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL17:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
-                    doismil16: filterYears.doismil16,
-                    doismil17: !filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL18:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
-                    doismil16: filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: !filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL19:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
-                    doismil16: filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: !filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL20:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
+    const handleFilter = useCallback(() => {
+        setIsLoading(true);
+        setModalFilter(false);
 
-                    doismil16: filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: !filterYears.doismil20,
-                    doismil21: filterYears.doismil21,
-                });
-                break;
-            case filterYearsEnum.DOISMIL21:
-                setFilterYears({
-                    doismil15: filterYears.doismil15,
-                    doismil16: filterYears.doismil16,
-                    doismil17: filterYears.doismil17,
-                    doismil18: filterYears.doismil18,
-                    doismil19: filterYears.doismil19,
-                    doismil20: filterYears.doismil20,
-                    doismil21: !filterYears.doismil21,
-                });
-                break;
-            default:
-                break;
-        }
-    };
+        const selectedCategories = Object.keys(filterCategories).filter(
+            key => filterCategories[key],
+        );
 
-    const handlePressCategories = (categoryElement: number) => {
-        switch (categoryElement) {
-            case filterCategoriesEnum.DESIGN:
-                setFilterCategories({
-                    design: !filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.UXDESIGN:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: !filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.UIDESIGN:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: !filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.ARQUITETURA:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: !filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.CSS:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: !filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.USUABILIDADE:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: !filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
-                break;
-            case filterCategoriesEnum.DESIGNTHINKING:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: !filterCategories.designthinking,
-                });
-                break;
-            default:
-                break;
+        const selectedYears = Object.keys(filterYears).filter(
+            key => filterYears[key],
+        );
+
+        const selectedYearsString = selectedYears.map(year => years[year]);
+
+        if (
+            selectedCategories.length === 0 &&
+            selectedYearsString.length === 0
+        ) {
+            setIsLoading(false);
+            return;
         }
-    };
+
+        const newBooks: IBookProps[] = [];
+
+        books.forEach(book => {
+            if (
+                book.published
+                    .toString()
+                    .includes(selectedYearsString.join(','))
+            ) {
+                newBooks.push(book);
+            }
+        });
+
+        if (selectedCategories.length > 0) {
+            newBooks.forEach(book => {
+                if (selectedCategories.includes(book.category.toLowerCase())) {
+                    newBooks.push(book);
+                }
+            });
+        }
+
+        setBooksAux(newBooks);
+        setIsLoading(false);
+    }, [books, filterCategories, filterYears]);
+
+    const handlePressYear = useCallback(
+        (yearElement: number) => {
+            switch (yearElement) {
+                case filterYearsEnum.DOISMIL15:
+                    setFilterYears({
+                        doismil15: !filterYears.doismil15,
+                        doismil16: filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL16:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+                        doismil16: !filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL17:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+                        doismil16: filterYears.doismil16,
+                        doismil17: !filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL18:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+                        doismil16: filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: !filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL19:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+                        doismil16: filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: !filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL20:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+
+                        doismil16: filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: !filterYears.doismil20,
+                        doismil21: filterYears.doismil21,
+                    });
+                    break;
+                case filterYearsEnum.DOISMIL21:
+                    setFilterYears({
+                        doismil15: filterYears.doismil15,
+                        doismil16: filterYears.doismil16,
+                        doismil17: filterYears.doismil17,
+                        doismil18: filterYears.doismil18,
+                        doismil19: filterYears.doismil19,
+                        doismil20: filterYears.doismil20,
+                        doismil21: !filterYears.doismil21,
+                    });
+                    break;
+                default:
+                    break;
+            }
+        },
+        [
+            filterYears.doismil15,
+            filterYears.doismil16,
+            filterYears.doismil17,
+            filterYears.doismil18,
+            filterYears.doismil19,
+            filterYears.doismil20,
+            filterYears.doismil21,
+        ],
+    );
+
+    const handlePressCategories = useCallback(
+        (categoryElement: number) => {
+            switch (categoryElement) {
+                case filterCategoriesEnum.DESIGN:
+                    setFilterCategories({
+                        design: !filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.UXDESIGN:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: !filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.UIDESIGN:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: !filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.ARQUITETURA:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: !filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.CSS:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: !filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.USUABILIDADE:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: !filterCategories.usuabilidade,
+                        designthinking: filterCategories.designthinking,
+                    });
+                    break;
+                case filterCategoriesEnum.DESIGNTHINKING:
+                    setFilterCategories({
+                        design: filterCategories.design,
+                        uxdesign: filterCategories.uxdesign,
+                        uidesign: filterCategories.uidesign,
+                        arquitetura: filterCategories.arquitetura,
+                        css: filterCategories.css,
+                        usuabilidade: filterCategories.usuabilidade,
+                        designthinking: !filterCategories.designthinking,
+                    });
+                    break;
+                default:
+                    break;
+            }
+        },
+        [
+            filterCategories.arquitetura,
+            filterCategories.css,
+            filterCategories.design,
+            filterCategories.designthinking,
+            filterCategories.uidesign,
+            filterCategories.usuabilidade,
+            filterCategories.uxdesign,
+        ],
+    );
 
     const handlePressSearchIcon = () => {
         setIsLoading(true);
@@ -507,7 +585,11 @@ function Home() {
                         />
                     </YearsBody>
 
-                    <FilterButton>
+                    <FilterButton
+                        onPress={() => {
+                            handleFilter();
+                        }}
+                    >
                         <FilterText>Filtrar</FilterText>
                     </FilterButton>
                 </ModalContainer>
