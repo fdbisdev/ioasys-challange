@@ -49,13 +49,13 @@ const filterCategoriesInitialState = {
 };
 
 const filterYearsInitialState = {
-    DOISMIL15: false,
-    DOISMIL16: false,
-    DOISMIL17: false,
-    DOISMIL18: false,
-    DOISMIL19: false,
-    DOISMIL20: false,
-    DOISMIL21: false,
+    doismil15: false,
+    doismil16: false,
+    doismil17: false,
+    doismil18: false,
+    doismil19: false,
+    doismil20: false,
+    doismil21: false,
 };
 
 // eslint-disable-next-line no-shadow
@@ -69,6 +69,7 @@ enum filterCategoriesEnum {
     DESIGNTHINKING,
 }
 
+// eslint-disable-next-line no-shadow
 enum filterYearsEnum {
     DOISMIL15,
     DOISMIL16,
@@ -95,6 +96,91 @@ function Home() {
     const { error } = useSnackbar();
 
     const { signOut, userHeaders } = useAuth();
+
+    const handlePressYear = (yearElement: number) => {
+        switch (yearElement) {
+            case filterYearsEnum.DOISMIL15:
+                setFilterYears({
+                    doismil15: !filterYears.doismil15,
+                    doismil16: filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL16:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+                    doismil16: !filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL17:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+                    doismil16: filterYears.doismil16,
+                    doismil17: !filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL18:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+                    doismil16: filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: !filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL19:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+                    doismil16: filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: !filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL20:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+
+                    doismil16: filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: !filterYears.doismil20,
+                    doismil21: filterYears.doismil21,
+                });
+                break;
+            case filterYearsEnum.DOISMIL21:
+                setFilterYears({
+                    doismil15: filterYears.doismil15,
+                    doismil16: filterYears.doismil16,
+                    doismil17: filterYears.doismil17,
+                    doismil18: filterYears.doismil18,
+                    doismil19: filterYears.doismil19,
+                    doismil20: filterYears.doismil20,
+                    doismil21: !filterYears.doismil21,
+                });
+                break;
+            default:
+                break;
+        }
+    };
 
     const handlePressCategories = (categoryElement: number) => {
         switch (categoryElement) {
@@ -176,15 +262,6 @@ function Home() {
                 });
                 break;
             default:
-                setFilterCategories({
-                    design: filterCategories.design,
-                    uxdesign: filterCategories.uxdesign,
-                    uidesign: filterCategories.uidesign,
-                    arquitetura: filterCategories.arquitetura,
-                    css: filterCategories.css,
-                    usuabilidade: filterCategories.usuabilidade,
-                    designthinking: filterCategories.designthinking,
-                });
                 break;
         }
     };
@@ -380,31 +457,52 @@ function Home() {
 
                     <YearsBody>
                         <FilterBullet
-                            active={filterYears.DOISMIL15}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL15)
+                            }
+                            active={filterYears.doismil15}
                             bulletTitle="2015"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL16}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL16)
+                            }
+                            active={filterYears.doismil16}
                             bulletTitle="2016"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL17}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL17)
+                            }
+                            active={filterYears.doismil17}
                             bulletTitle="2017"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL18}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL18)
+                            }
+                            active={filterYears.doismil18}
                             bulletTitle="2018"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL19}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL19)
+                            }
+                            active={filterYears.doismil19}
                             bulletTitle="2019"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL20}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL20)
+                            }
+                            active={filterYears.doismil20}
                             bulletTitle="2020"
                         />
                         <FilterBullet
-                            active={filterYears.DOISMIL21}
+                            onPress={() =>
+                                handlePressYear(filterYearsEnum.DOISMIL21)
+                            }
+                            active={filterYears.doismil21}
                             bulletTitle="2021"
                         />
                     </YearsBody>
