@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
+import { BulletProps } from '.';
 
-export const Container = styled.TouchableOpacity`
-    background-color: #fff;
+export const Container = styled.TouchableOpacity<BulletProps>`
+    background-color: ${props => (props.active ? '#333' : '#fff')};
     padding: 6px 16px;
     border-radius: 44px;
     margin-bottom: 10px;
@@ -13,9 +14,9 @@ export const Container = styled.TouchableOpacity`
     justify-content: space-between;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text<BulletProps>`
     font-size: 14px;
     line-height: 20px;
-    color: #333;
-    font-weight: 300;
+    color: ${props => (props.active ? '#fff' : '#333')};
+    font-weight: 400;
 `;
