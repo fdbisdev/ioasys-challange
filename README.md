@@ -31,8 +31,8 @@
       <img src="https://raw.githubusercontent.com/fdbisdev/ioasys-challange/main/src/assets/screenshots/Screenshot_1651111400.png" width="300" alt="Homepage"/>
 </p>
 <p align="center">
+      <img src="https://raw.githubusercontent.com/fdbisdev/ioasys-challange/main/src/assets/screenshots/Screenshot_1651429048.png" width="300" alt="Filter Books"/>
       <img src="https://raw.githubusercontent.com/fdbisdev/ioasys-challange/main/src/assets/screenshots/Screenshot_1651111409.png" width="300" alt="Book Details"/>
-      <img src="https://raw.githubusercontent.com/fdbisdev/ioasys-challange/main/src/assets/screenshots/Screenshot_1651111415.png" width="300" alt="More Book Details" />
 </p>
 
 ---
